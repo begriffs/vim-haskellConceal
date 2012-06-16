@@ -78,7 +78,7 @@ if s:extraConceal
     syntax match hsNiceOperator "=>" conceal cchar=⇒
 
     " Redefining to get proper '::' concealing
-    syntax match hs_DeclareFunction /^[a-z_(]\S*\(\s\|\n\)*::/me=e-2 nextgroup=hsNiceOperator contains=hs_FunctionName,hs_OpFunctionName
+    syntax match hs_DeclareFunction /^[a-z_(]\S*\(\s\|\n\)*\zs::/me=e-2 nextgroup=hsNiceOperator contains=hs_FunctionName,hs_OpFunctionName
     " Preserve horizontal spacing by replacing characters individually
     " syntax match hsNiceOperator "\:\:" conceal cchar=∷
     syn match hsTypeDef1 contained "\:" conceal cchar=:
