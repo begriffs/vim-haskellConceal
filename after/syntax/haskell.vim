@@ -36,15 +36,24 @@ endif
 
 " vim: set fenc=utf-8:
 syntax match hsNiceOperator "\\\ze[[:alpha:][:space:]_([]" conceal cchar=λ
-syntax match hsNiceOperator "<-" conceal cchar=←
-syntax match hsNiceOperator "->" conceal cchar=→
+" Preserve horizontal spacing by replacing characters individually
+" syntax match hsNiceOperator "<-" conceal cchar=←
+" syntax match hsNiceOperator "->" conceal cchar=→
+syn match hsLRArrowHead contained ">" conceal cchar= 
+syn match hsLRArrowTail contained "-" conceal cchar=→
+syn match hsLRArrowFull "->" contains=hsLRArrowHead,hsLRArrowTail
+syn match hsRLArrowHead contained "<" conceal cchar=←
+syn match hsRLArrowTail contained "-" conceal cchar= 
+syn match hsRLArrowFull "<-" contains=hsRLArrowHead,hsRLArrowTail
 syntax match hsNiceOperator "\<sum\>" conceal cchar=∑
 syntax match hsNiceOperator "\<product\>" conceal cchar=∏ 
 syntax match hsNiceOperator "\<sqrt\>" conceal cchar=√ 
 syntax match hsNiceOperator "\<pi\>" conceal cchar=π
 syntax match hsNiceOperator "==" conceal cchar=≡
 syntax match hsNiceOperator "\/=" conceal cchar=≠
-syntax match hsNiceOperator ">>" conceal cchar=»
+syntax match hsNiceOperator ">>[^>]" conceal cchar=»
+" syntax match hsNiceOperator ">>>" conceal cchar=⋙
+syntax match hsNiceOperator "<<" conceal cchar=«
 
 let s:extraConceal = 1
 " Some windows font don't support some of the characters,
@@ -71,11 +80,13 @@ if s:extraConceal
     syntax match hsNiceOperator ">=\ze[^>]" conceal cchar=≥
 
     syntax match hsNiceOperator "=>" conceal cchar=⇒
-    syntax match hsNiceOperator "=\zs<<" conceal cchar=«
 
     " Redfining to get proper '::' concealing
     syntax match hs_DeclareFunction /^[a-z_(]\S*\(\s\|\n\)*::/me=e-2 nextgroup=hsNiceOperator contains=hs_FunctionName,hs_OpFunctionName
-    syntax match hsNiceOperator "\:\:" conceal cchar=∷
+    " Preserve horizontal spacing by replacing characters individually
+    " syntax match hsNiceOperator "\:\:" conceal cchar=∷
+    syn match hsTypeDef1 contained "\:" conceal cchar=:
+    syn match hsTypeDef "\:\:" contains=hsTypeDef1
 
     syntax match hsNiceoperator "++" conceal cchar=⧺
     syntax match hsNiceOperator "\<forall\>" conceal cchar=∀
@@ -83,18 +94,71 @@ if s:extraConceal
     syntax match hsNiceOperator ">-" conceal cchar=↣
     syntax match hsNiceOperator "-<<" conceal cchar=⤛
     syntax match hsNiceOperator ">>-" conceal cchar=⤜
+    syntax match hsNiceOperator "()" conceal cchar=∅
+    syntax match hsNiceOperator "<\*>" conceal cchar=⊛
+    syntax match hsNiceOperator "\*\*\*" conceal cchar=⁂
+    syntax match hsNiceOperator "<>" conceal cchar=⊕
+    syntax match hsNiceOperator "[ (]\zs\*\ze[ )]" conceal cchar=⋅
+    syntax match hsNiceOperator "[ (]\zs\/\ze[ )]" conceal cchar=÷
+    syntax match hsNiceOperator "\<Integer\>" conceal cchar=ℤ
     " the star does not seem so good...
     " syntax match hsNiceOperator "*" conceal cchar=★
 
     " Only replace the dot, avoid taking spaces around.
     syntax match hsNiceOperator /\s\.\s/ms=s+1,me=e-1 conceal cchar=∘
     syntax match hsNiceOperator "\.\." conceal cchar=‥
+    syntax match hsNiceOperator "&&" conceal cchar=∧
+    syntax match hsNiceOperator "||" conceal cchar=∨
+    syntax match hsNiceOperator "\<not\>" conceal cchar=¬
 
     syntax match hsQQEnd "|\]" contained conceal cchar=〛
     " sy match hsQQEnd "|\]" contained conceal=〚
 
     syntax match hsNiceOperator "`elem`" conceal cchar=∈
     syntax match hsNiceOperator "`notElem`" conceal cchar=∉
+    syntax match hsNiceOperator "\<elem\>" conceal cchar=∈
+    syntax match hsNiceOperator "\<notElem\>" conceal cchar=∉
+
+    syntax match hsNiceOperator "`member`" conceal cchar=∈
+    syntax match hsNiceOperator "`notMember`" conceal cchar=∉
+    syntax match hsNiceOperator "\<member\>" conceal cchar=∈
+    syntax match hsNiceOperator "\<notMember\>" conceal cchar=∉
+    
+    syntax match hsNiceOperator "`M.member`" conceal cchar=∈
+    syntax match hsNiceOperator "`M.notMember`" conceal cchar=∉
+    syntax match hsNiceOperator "\<M.member\>" conceal cchar=∈
+    syntax match hsNiceOperator "\<M.notMember\>" conceal cchar=∉
+    
+    syntax match hsNiceOperator "`S.member`" conceal cchar=∈
+    syntax match hsNiceOperator "`S.notMember`" conceal cchar=∉
+    syntax match hsNiceOperator "\<S.member\>" conceal cchar=∈
+    syntax match hsNiceOperator "\<S.notMember\>" conceal cchar=∉
+    
+    syntax match hsNiceOperator "`isSubsetOf`" conceal cchar=⊆
+    syntax match hsNiceOperator "\<isSubsetOf\>" conceal cchar=⊆
+    syntax match hsNiceOperator "`S.isSubsetOf`" conceal cchar=⊆
+    syntax match hsNiceOperator "\<S.isSubsetOf\>" conceal cchar=⊆
+    
+    syntax match hsNiceOperator "`union`" conceal cchar=∪
+    syntax match hsNiceOperator "\<union\>" conceal cchar=∪
+    syntax match hsNiceOperator "`S.union`" conceal cchar=∪
+    syntax match hsNiceOperator "\<S.union\>" conceal cchar=∪
+    syntax match hsNiceOperator "`M.union`" conceal cchar=∪
+    syntax match hsNiceOperator "\<M.union\>" conceal cchar=∪
+    
+    syntax match hsNiceOperator "`intersection`" conceal cchar=∩
+    syntax match hsNiceOperator "\<intersection\>" conceal cchar=∩
+    syntax match hsNiceOperator "`S.intersection`" conceal cchar=∩
+    syntax match hsNiceOperator "\<S.intersection\>" conceal cchar=∩
+    syntax match hsNiceOperator "`M.intersection`" conceal cchar=∩
+    syntax match hsNiceOperator "\<M.intersection\>" conceal cchar=∩
+    
+    syntax match hsNiceOperator "`difference`" conceal cchar=−
+    syntax match hsNiceOperator "\<difference\>" conceal cchar=−
+    syntax match hsNiceOperator "`S.difference`" conceal cchar=−
+    syntax match hsNiceOperator "\<S.difference\>" conceal cchar=−
+    syntax match hsNiceOperator "`M.difference`" conceal cchar=−
+    syntax match hsNiceOperator "\<M.difference\>" conceal cchar=−
 endif
 
 hi link hsNiceOperator Operator
