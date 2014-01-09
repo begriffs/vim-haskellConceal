@@ -50,6 +50,7 @@ syntax match hsNiceOperator ">>[^>]" conceal cchar=»
 syntax match hsNiceOperator "<<" conceal cchar=«
 syntax match hsNiceOperator "&&" conceal cchar=∧
 syntax match hsNiceOperator "||" conceal cchar=∨
+syntax match hsNiceOperator "!!" conceal cchar=‼
 
 let s:extraConceal = 1
 " Some windows font don't support some of the characters,
@@ -97,6 +98,8 @@ if s:extraConceal
     syntax match hsNiceOperator "[ (]\zs\/\ze[ )]" conceal cchar=÷
     syntax match hsNiceOperator "\<Integer\>" conceal cchar=ℤ
     syntax match hsNiceOperator "[^<]\zs\*\ze[^>]" conceal cchar=×
+    syntax match hsNiceOperator ">>>" conceal cchar=↠
+    syntax match hsNiceOperator "<<<" conceal cchar=↞
 
     " Only replace the dot, avoid taking spaces around.
     syntax match hsNiceOperator /\s\.\s/ms=s+1,me=e-1 conceal cchar=∘
@@ -140,6 +143,7 @@ if s:extraConceal
     syntax match hsNiceOperator "`M.union`" conceal cchar=∪
     syntax match hsNiceOperator "\<M.union\>" conceal cchar=∪
     
+    syntax match hsNiceOperator "`intersect`" conceal cchar=∩
     syntax match hsNiceOperator "`intersection`" conceal cchar=∩
     syntax match hsNiceOperator "\<intersection\>" conceal cchar=∩
     syntax match hsNiceOperator "`S.intersection`" conceal cchar=∩
